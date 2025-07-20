@@ -8,10 +8,17 @@ module.exports = {
 		.setDescription('Download video from twitter')
 		.addStringOption(option =>
 			option.setName('url')
-				.setDescription('Link do tweeta z video')
+				.setDescription('Link to the tweet with video')
 				.setRequired(true)
+		)
+		.addBooleanOption(option =>
+			option.setName('private')
+				.setDescription('Set to only visible to you')
+				.setRequired(false)
 		),
 	async execute(interaction) {
+		const isEphemeral = interaction.options.getBoolean('private') ?? false;
+
 		const tweetUrl = interaction.options.getString('url');
 		
 		// Walidacja URL
@@ -23,7 +30,7 @@ module.exports = {
 			return;
 		}
 
-		await interaction.deferReply();
+		await interaction.deferReply({ ephemeral: isEphemeral });
 
 		try {
 			// Ścieżka do skryptu scraper.py
