@@ -4,11 +4,11 @@ const path = require('path');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('twitter')
-		.setDescription('Download video from twitter')
+		.setName('download')
+		.setDescription('Download video from twitter/instagram/youtube/tiktok.')
 		.addStringOption(option =>
 			option.setName('url')
-				.setDescription('Link to the tweet with video')
+				.setDescription('Link to the video')
 				.setRequired(true)
 		)
 		.addBooleanOption(option =>
@@ -19,16 +19,16 @@ module.exports = {
 	async execute(interaction) {
 		const isEphemeral = interaction.options.getBoolean('private') ?? false;
 
-		const tweetUrl = interaction.options.getString('url');
+		const videoUrl = interaction.options.getString('url');
 		
 		// Walidacja URL
-		if (!tweetUrl.includes('twitter.com') && !tweetUrl.includes('x.com')) {
-			await interaction.reply({
-				content: '❌ Błąd: Proszę podać poprawny link do tweeta.',
-				ephemeral: true
-			});
-			return;
-		}
+		// if (!videoUrl.includes('twitter.com') && !videoUrl.includes('x.com')) {
+		// 	await interaction.reply({
+		// 		content: '❌ Błąd: Proszę podać poprawny link do tweeta.',
+		// 		ephemeral: true
+		// 	});
+		// 	return;
+		// }
 
 		await interaction.deferReply({ ephemeral: isEphemeral });
 
@@ -37,8 +37,8 @@ module.exports = {
 			const scraperPath = path.join(__dirname, '../../scraper.py');
 			
 			// Wywołaj skrypt Python
-			const pythonProcess = spawn('python3', [scraperPath, tweetUrl]);
-			
+			const pythonProcess = spawn('python3', [scraperPath, videoUrl]);
+
 			let output = '';
 			let errorOutput = '';
 			
@@ -79,7 +79,7 @@ module.exports = {
 			});
 			
 		} catch (error) {
-			console.error('Błąd w komendzie twitter:', error);
+			console.error('Błąd w komendzie download:', error);
 			await interaction.editReply({
 				content: '❌ Wystąpił nieoczekiwany błąd.'
 			});

@@ -2,15 +2,16 @@ import yt_dlp
 import sys
 
 def main():
-    # Link do tweeta z wideo
+    # Link do posta z wideo
     if len(sys.argv) < 2:
-        print("❌ Błąd: Proszę podać link do tweeta jako argument wywołania skryptu.")
+        print("❌ Error: please enter correct video link.")
         exit()
 
-    tweet_url = sys.argv[1]
+    video_url = sys.argv[1]
     # Prosta walidacja linku
-    if not ("twitter.com" in tweet_url or "x.com" in tweet_url):
-        print("❌ Błąd: Proszę podać poprawny link do tweeta (x.com lub twitter.com).", file=sys.stderr)
+    accepted_domains = ["twitter.com", "x.com", "instagram.com", "youtube.com", "youtu.be", "tiktok.com"]
+    if not any(domain in video_url for domain in accepted_domains):
+        print("❌ Error: Please provide a valid link (accepted sites: twitter.com, instagram.com, youtube.com, tiktok.com).", file=sys.stderr)
         sys.exit(1)
 
     # Opcje dla yt-dlp
@@ -24,15 +25,15 @@ def main():
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             # Wyodrębnij informacje z linku
-            video_info = ydl.extract_info(tweet_url, download=False)
+            video_info = ydl.extract_info(video_url, download=False)
             
             print(video_info['url'])
 
     except yt_dlp.utils.DownloadError as e:
-        print(f"❌ Błąd: Nie udało się przetworzyć linku. Sprawdź, czy jest poprawny i zawiera wideo.", file=sys.stderr)
+        print(f"❌ Error: Failed to process the link. Please check if it is correct and contains a video.", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"❌ Wystąpił nieoczekiwany błąd: {e}", file=sys.stderr)
+        print(f"❌ An unexpected error occurred: {e}", file=sys.stderr)
         sys.exit(1)
     
 
