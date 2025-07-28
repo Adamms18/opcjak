@@ -56,7 +56,7 @@ module.exports = {
 					const videoUrl = output.trim();
 					if (videoUrl) {
 						await interaction.editReply({
-							content: `${videoUrl}`
+							content: `[Link](${videoUrl})`,
 						});
 					} else {
 						await interaction.editReply({
