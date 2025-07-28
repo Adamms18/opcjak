@@ -11,7 +11,7 @@ def main():
     # Prosta walidacja linku
     accepted_domains = ["twitter.com", "x.com", "instagram.com", "youtube.com", "youtu.be", "tiktok.com"]
     if not any(domain in video_url for domain in accepted_domains):
-        print("❌ Error: Please provide a valid link (accepted sites: twitter.com, instagram.com, youtube.com, tiktok.com).", file=sys.stderr)
+        print("❌ Error: Please provide a valid link.", file=sys.stderr)
         sys.exit(1)
 
     # Opcje dla yt-dlp

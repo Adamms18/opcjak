@@ -21,14 +21,15 @@ module.exports = {
 
 		const videoUrl = interaction.options.getString('url');
 		
-		// Walidacja URL
-		// if (!videoUrl.includes('twitter.com') && !videoUrl.includes('x.com')) {
-		// 	await interaction.reply({
-		// 		content: '❌ Błąd: Proszę podać poprawny link do tweeta.',
-		// 		ephemeral: true
-		// 	});
-		// 	return;
-		// }
+		// URL Validation
+		const acceptedDomains = ["twitter.com", "x.com", "instagram.com", "youtube.com", "youtu.be", "tiktok.com"];
+		if (!acceptedDomains.some(domain => videoUrl.includes(domain))) {
+			await interaction.reply({
+				content: '❌ Error: Please provide a valid link (accepted sites: twitter.com, instagram.com, youtube.com, tiktok.com).',
+				ephemeral: true
+			});
+			return;
+		}
 
 		await interaction.deferReply({ ephemeral: isEphemeral });
 
